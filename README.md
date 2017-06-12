@@ -1,6 +1,6 @@
 # Client-Server-Voting-App
 
-The client application will be done in Android, while the server application will be implemented in .java and .c and it will be running at the lab's cluster. 
+The client application will be done in Android, while the server application will be implemented in `.java` and `.c` and it will be running at the lab's cluster. 
 
 ### Steps to Run the Server
 
