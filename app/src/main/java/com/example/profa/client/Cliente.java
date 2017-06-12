@@ -10,12 +10,15 @@ import java.io.IOException;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-class Cliente extends AsyncTask<Object, Object, String> {
+public class Cliente extends AsyncTask<Object, String, String> {
 
     String dstAddress;
     int dstPort;
@@ -28,7 +31,7 @@ class Cliente extends AsyncTask<Object, Object, String> {
         this.textResponse = textResponse;
     }
 
-    @Override
+
     protected String doInBackground(Object... arg0) {
 
         Socket socket = null;
@@ -42,13 +45,20 @@ class Cliente extends AsyncTask<Object, Object, String> {
 
             int bytesRead;
             InputStream inputStream = socket.getInputStream();
+            OutputStream outpuStream = socket.getOutputStream();
 
+            inputStream.read(buffer);
+            response = new String(buffer);
+            publishProgress(response);
 			/*
              * notice: inputStream.read() will block if no data return
 			 */
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 byteArrayOutputStream.write(buffer, 0, bytesRead);
-                response += byteArrayOutputStream.toString("UTF-8");
+                inputStream.read(buffer);
+                response = new String(buffer);
+                publishProgress(response);
+                //response += byteArrayOutputStream.toString("UTF-8");
             }
 
         } catch (UnknownHostException e) {
@@ -70,6 +80,12 @@ class Cliente extends AsyncTask<Object, Object, String> {
             }
         }
         return response;
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        textResponse.setText(values[0]);
+        super.onProgressUpdate(values);
     }
 
     @Override
