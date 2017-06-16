@@ -8,6 +8,10 @@ The client application will be done in Android, while the server application wil
 2. ssh to the node10: `ssh node10`
 3. connect the application on the designated port to your group
 
+### Material Design 
+
+The colors for the app were based on [Google's Material Design](https://material.io/guidelines/style/color.html#color-color-palette)
+
 ### Usefull link for Project Reference 
 
 1. [Server Side Exemple Code](http://androidsrc.net/android-client-server-using-sockets-server-implementation/)
