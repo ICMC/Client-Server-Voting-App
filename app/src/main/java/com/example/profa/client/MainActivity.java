@@ -1,62 +1,53 @@
 package com.example.profa.client;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.app.Activity;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    TextView response;
-    EditText editTextAddress, editTextPort;
-    Button buttonConnect, buttonClear;
-
+    public static final String EXTRA_MESSAGE = "com.example.profa.client.MESSAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        final EditText idNumber;
+        Button buttonConnect;
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
-        editTextAddress = (EditText) findViewById(R.id.addressEditText);
-        editTextPort = (EditText) findViewById(R.id.portEditText);
-        buttonConnect = (Button) findViewById(R.id.connectButton);
-        buttonClear = (Button) findViewById(R.id.clearButton);
 
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        idNumber = (EditText) findViewById(R.id.idNumber);
+        buttonConnect =(Button) findViewById(R.id.connectButton);
 
-        //View vi = inflater.inflate(R.layout.client, null);
-        response = (TextView) findViewById(R.id.responseTextView);
-
-        buttonConnect.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Cliente myCliente = new Cliente(editTextAddress.getText()
-                        .toString(), Integer.parseInt(editTextPort
-                        .getText().toString()), response);
-                myCliente.execute();
-
-               //setContentView(R.layout.client);
-              // LinearLayout mServer = (LinearLayout) findViewById(R.id.message);
-               //mServer.addView(response);
-            }
-        });
-
-        buttonClear.setOnClickListener(new OnClickListener() {
-
+        buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                response.setText("");
+                if(idNumber.getText().toString()!=null){
+                    Intent intent = new Intent(v.getContext(), CandidateDisplay.class);
+                    String message = idNumber.getText().toString();
+                    intent.putExtra(EXTRA_MESSAGE, message);
+                    startActivity(intent);
+                }else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "Type your ID";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
             }
         });
+
+
+
+
     }
 }

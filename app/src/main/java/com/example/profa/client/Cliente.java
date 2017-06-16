@@ -1,14 +1,14 @@
-package com.example.profa.client;
-
-/**
- * Created by profa on 12/06/2017.
+package com.example.profa.client; /**
+ * Created by pawpepe on 12/06/2017.
  */
 
 import java.io.IOException;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -23,11 +23,17 @@ public class Cliente extends AsyncTask<Object, String, String> {
     String dstAddress;
     int dstPort;
     String response = "";
-    TextView textResponse;
+    String textResponse;
+    String candidateId;
+    String candidate = "";
+    Context context;
 
-    Cliente(String addr, int port, TextView textResponse) {
+
+    Cliente(String addr, int port, String id, String textResponse, Context context) {
         dstAddress = addr;
         dstPort = port;
+        candidateId =id;
+        this.context = context;
         this.textResponse = textResponse;
     }
 
@@ -47,6 +53,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
             InputStream inputStream = socket.getInputStream();
             OutputStream outpuStream = socket.getOutputStream();
 
+            //prints message from the server
             inputStream.read(buffer);
             response = new String(buffer);
             publishProgress(response);
@@ -84,13 +91,22 @@ public class Cliente extends AsyncTask<Object, String, String> {
 
     @Override
     protected void onProgressUpdate(String... values) {
-        textResponse.setText(values[0]);
+        textResponse = values[0];
+
+            CharSequence text = "connected";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, textResponse, duration);
+            toast.show();
+
+
+
         super.onProgressUpdate(values);
     }
 
     @Override
     protected void onPostExecute(String result) {
-        textResponse.setText(response);
+        textResponse= response;
         super.onPostExecute(result);
     }
 
