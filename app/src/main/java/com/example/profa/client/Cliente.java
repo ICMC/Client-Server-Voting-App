@@ -57,6 +57,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
             inputStream.read(buffer);
             response = new String(buffer);
             publishProgress(response);
+
 			/*
              * notice: inputStream.read() will block if no data return
 			 */
