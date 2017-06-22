@@ -2,11 +2,15 @@ package com.example.profa.client; /**
  * Created by pawpepe on 12/06/2017.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-
+import org.json.*;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,14 +31,22 @@ public class Cliente extends AsyncTask<Object, String, String> {
     String candidateId;
     String candidate = "";
     Context context;
+    RadioButton candidate1, candidate2, candidate3,  candidate4, candidate5;
+    String vote;
 
 
-    Cliente(String addr, int port, String id, String textResponse, Context context) {
+    Cliente(String addr, int port, String id, String textResponse, Context context, RadioButton candidate1, RadioButton candidate2, RadioButton candidate3, RadioButton candidate4, RadioButton candidate5, String vote) {
         dstAddress = addr;
         dstPort = port;
         candidateId =id;
         this.context = context;
         this.textResponse = textResponse;
+        this.candidate1 = candidate1;
+        this.candidate2 = candidate2;
+        this.candidate3 = candidate3;
+        this.candidate4 = candidate4;
+        this.candidate5 = candidate5;
+        this.vote = vote;
     }
 
 
@@ -47,16 +59,37 @@ public class Cliente extends AsyncTask<Object, String, String> {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
                     1024);
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[6022386];
 
             int bytesRead;
             InputStream inputStream = socket.getInputStream();
-            OutputStream outpuStream = socket.getOutputStream();
+            OutputStream outputStream = socket.getOutputStream();
+
+
+
+            //if String is empty get file from server
+//            if(vote.compareTo("") == 0){
+//                File candidates = new File("candidate.txt");
+//                FileInputStream inFile = new FileInputStream(candidates);
+//
+//                int count;
+//                while ((count = inFile.read(buffer)) > 0) {
+//                    outputStream.write(buffer, 0, count);
+//                }
+//
+//                outputStream.close();
+//                inFile.close();
+//
+//            }
+
 
             //prints message from the server
             inputStream.read(buffer);
             response = new String(buffer);
+
             publishProgress(response);
+
+            socket.close();
 			/*
              * notice: inputStream.read() will block if no data return
 			 */
@@ -65,7 +98,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
                 inputStream.read(buffer);
                 response = new String(buffer);
                 publishProgress(response);
-                //response += byteArrayOutputStream.toString("UTF-8");
+
             }
 
         } catch (UnknownHostException e) {
@@ -91,15 +124,13 @@ public class Cliente extends AsyncTask<Object, String, String> {
 
     @Override
     protected void onProgressUpdate(String... values) {
-        textResponse = values[0];
+           textResponse = values[0];
 
             CharSequence text = "connected";
             int duration = Toast.LENGTH_SHORT;
-
+            vote =  textResponse;
             Toast toast = Toast.makeText(context, textResponse, duration);
             toast.show();
-
-
 
         super.onProgressUpdate(values);
     }
