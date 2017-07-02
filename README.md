@@ -19,7 +19,7 @@ The colors for the app were based on [Google's Material Design](https://material
 3. [How to Read Json Files](https://crunchify.com/how-to-read-json-object-from-file-in-java/)
 4. [Transfer File Through Sockets](https://stackoverflow.com/questions/6099636/sending-files-through-sockets)
 
-
+# what the app does 
 1. open conection (send opcode 888)
 2. receive candidates (close conection)
 3. colect votes
