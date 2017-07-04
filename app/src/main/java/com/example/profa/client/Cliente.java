@@ -7,9 +7,15 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
@@ -17,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 
 public class Cliente extends AsyncTask<Object, String, String> {
 
@@ -27,15 +34,23 @@ public class Cliente extends AsyncTask<Object, String, String> {
     String candidateId;
     String candidate = "";
     Context context;
+    String voteInfo;
+    int opcode;
 
 
-    Cliente(String addr, int port, String id, String textResponse, Context context) {
+
+    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, int opcode) {
         dstAddress = addr;
         dstPort = port;
         candidateId =id;
         this.context = context;
         this.textResponse = textResponse;
+        this.voteInfo = voteInfo;
+        this.opcode = opcode;
+
     }
+
+
 
 
     protected String doInBackground(Object... arg0) {
@@ -53,10 +68,11 @@ public class Cliente extends AsyncTask<Object, String, String> {
             InputStream inputStream = socket.getInputStream();
             OutputStream outpuStream = socket.getOutputStream();
 
+            // Send to server the voteInfo string , and the server will return is the vote was valid
+            // Else it will throw a message telling for example that the candidate already voted
+
             //prints message from the server
             inputStream.read(buffer);
-            response = new String(buffer);
-            publishProgress(response);
 
 			/*
              * notice: inputStream.read() will block if no data return
@@ -66,7 +82,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
                 inputStream.read(buffer);
                 response = new String(buffer);
                 publishProgress(response);
-                //response += byteArrayOutputStream.toString("UTF-8");
+
             }
 
         } catch (UnknownHostException e) {
@@ -77,6 +93,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
             // TODO Auto-generated catch block
             e.printStackTrace();
             response = "IOException: " + e.toString();
+
         } finally {
             if (socket != null) {
                 try {
@@ -93,7 +110,6 @@ public class Cliente extends AsyncTask<Object, String, String> {
     @Override
     protected void onProgressUpdate(String... values) {
         textResponse = values[0];
-
             CharSequence text = "connected";
             int duration = Toast.LENGTH_SHORT;
 
@@ -108,7 +124,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
     @Override
     protected void onPostExecute(String result) {
         textResponse= response;
-        super.onPostExecute(result);
+        super.onPostExecute(textResponse);
     }
 
 }

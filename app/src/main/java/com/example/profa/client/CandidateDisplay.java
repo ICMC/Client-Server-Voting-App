@@ -1,6 +1,9 @@
 package com.example.profa.client;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
+import java.util.logging.LogRecord;
 
 /**
  * Created by pawpepe on 15/06/2017.
@@ -36,39 +40,25 @@ public class CandidateDisplay extends Activity{
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        final String candidateId = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        final String voterId = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
         // Capture the layout's TextView and set the string as its text
-        TextView textView = (TextView) findViewById(R.id.candidateID);
-        textView.setText(candidateId);
+        TextView textView = (TextView) findViewById(R.id.voterID);
+        textView.setText(voterId);
 
 
-        Button vote= (Button) findViewById(R.id.vote);
+        final Button vote= (Button) findViewById(R.id.vote);
 
         final String address = "cosmos.lasdpc.icmc.usp.br";
         final int port = 40011;
         final String response = "";
         final Context context = getApplicationContext();
+        String voteInfo = "";
+        int opcode = 0;
 
-        vote.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(candidateName.compareTo("") != 0){
-                    JSONObject obj = new JSONObject();
-                    JSONArray arr = new JSONArray();
-                    try {
-                        obj.put("id",candidateId);
-                        obj.put("candidate",candidateName);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+        Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode);
+        myCliente.execute();
 
-                    arr.put(obj);
-                    Cliente myCliente = new Cliente(address,port,candidateId, response, context);
-                    myCliente.execute();
-                }
-            }
-        });
 
     }
 
