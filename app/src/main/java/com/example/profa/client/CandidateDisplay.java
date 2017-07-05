@@ -77,14 +77,31 @@ public class CandidateDisplay extends Activity{
         Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode, candidat, candidat2, candidat3, candidat4, candidat5);
         myCliente.execute();
 
+        //create Json array to return the values of the votes;
 
-
-
+        vote.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //onRadioButtonClicked(v,);
+            }
+        });
 
 
     }
 
-    public void onRadioButtonClicked(View view) {
+    public void addVote(String name, JSONArray jArr) throws JSONException {
+        JSONObject obj;
+        for(int i=0; i< jArr.length(); i++){
+            obj = jArr.getJSONObject(i);
+            if((obj.getString("name").compareTo(name))==0){
+                obj.put("num_votes",obj.getInt("num_votes")+1);
+                break;
+            }
+
+        }
+    }
+
+    public void onRadioButtonClicked(View view, JSONArray jArr, Context context) throws JSONException {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -93,39 +110,53 @@ public class CandidateDisplay extends Activity{
         RadioButton candidate3 = (RadioButton) findViewById(R.id.candidate3);
         RadioButton candidate4 = (RadioButton) findViewById(R.id.candidate4);
         RadioButton candidate5 = (RadioButton) findViewById(R.id.candidate5);
-        RadioButton branco = (RadioButton) findViewById(R.id.branco);
-        RadioButton nulo = (RadioButton) findViewById(R.id.nulo);
+
+        int duration = Toast.LENGTH_LONG;
+
 
         // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.candidate1:
                 if (checked)
                     candidateName = candidate1.getText().toString();
+                    addVote(candidateName,jArr);
+                    Toast toast = Toast.makeText(context,"Voto salvo", duration);
+                    toast.show();
+                    candidate1.setChecked(false);
                     break;
             case R.id.candidate2:
                 if (checked)
                     candidateName = candidate2.getText().toString();
+                    addVote(candidateName,jArr);
+                    toast = Toast.makeText(context,"Voto salvo", duration);
+                    toast.show();
+                    candidate1.setChecked(false);
                     break;
             case R.id.candidate3:
                 if (checked)
                     candidateName = candidate3.getText().toString();
+                    addVote(candidateName,jArr);
+                    toast = Toast.makeText(context,"Voto salvo", duration);
+                    toast.show();
+                    candidate1.setChecked(false);
                     break;
             case R.id.candidate4:
                 if (checked)
                     candidateName = candidate4.getText().toString();
+                    addVote(candidateName,jArr);
+                    toast = Toast.makeText(context,"Voto salvo", duration);
+                    toast.show();
+                    candidate1.setChecked(false);
                     break;
             case R.id.candidate5:
                 if (checked)
                     candidateName = candidate5.getText().toString();
+                    addVote(candidateName,jArr);
+                    toast = Toast.makeText(context,"Voto salvo", duration);
+                    toast.show();
+                    candidate1.setChecked(false);
                     break;
-            case R.id.branco:
-                if (checked)
-                    candidateName = branco.getText().toString();
-                    break;
-            case R.id.nulo:
-                if (checked)
-                    candidateName = nulo.getText().toString();
-                    break;
+
         }
     }
 
