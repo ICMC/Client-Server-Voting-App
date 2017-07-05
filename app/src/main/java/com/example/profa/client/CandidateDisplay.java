@@ -1,10 +1,14 @@
 package com.example.profa.client;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -23,6 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.LogRecord;
 
@@ -33,6 +43,9 @@ import java.util.logging.LogRecord;
 public class CandidateDisplay extends Activity{
     String votesInfo;
     String candidateName= "";
+    String serverJason =null;
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +64,22 @@ public class CandidateDisplay extends Activity{
 
         final String address = "cosmos.lasdpc.icmc.usp.br";
         final int port = 40011;
-        final String response = "";
+        final String response = null;
         final Context context = getApplicationContext();
         String voteInfo = "";
         int opcode = 0;
+        RadioButton candidat = (RadioButton) findViewById(R.id.candidate1);
+        RadioButton candidat2 = (RadioButton) findViewById(R.id.candidate2);
+        RadioButton candidat3 = (RadioButton) findViewById(R.id.candidate3);
+        RadioButton candidat4 = (RadioButton) findViewById(R.id.candidate4);
+        RadioButton candidat5 = (RadioButton) findViewById(R.id.candidate5);
 
-        Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode);
+        Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode, candidat, candidat2, candidat3, candidat4, candidat5);
         myCliente.execute();
+
+
+
+
 
 
     }
@@ -106,4 +128,7 @@ public class CandidateDisplay extends Activity{
                     break;
         }
     }
+
+
+
 }

@@ -11,9 +11,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -36,10 +38,15 @@ public class Cliente extends AsyncTask<Object, String, String> {
     Context context;
     String voteInfo;
     int opcode;
+    RadioButton candidat;
+    RadioButton candidat2;
+    RadioButton candidat3;
+    RadioButton candidat4;
+    RadioButton candidat5;
 
 
 
-    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, int opcode) {
+    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, int opcode, RadioButton candidat, RadioButton candidat2, RadioButton candidat3, RadioButton candidat4, RadioButton candidat5) {
         dstAddress = addr;
         dstPort = port;
         candidateId =id;
@@ -47,6 +54,11 @@ public class Cliente extends AsyncTask<Object, String, String> {
         this.textResponse = textResponse;
         this.voteInfo = voteInfo;
         this.opcode = opcode;
+        this.candidat = candidat;
+        this.candidat2 = candidat2;
+        this.candidat3 = candidat3;
+        this.candidat4 = candidat4;
+        this.candidat5 = candidat5;
 
     }
 
@@ -72,7 +84,8 @@ public class Cliente extends AsyncTask<Object, String, String> {
             // Else it will throw a message telling for example that the candidate already voted
 
             //prints message from the server
-            inputStream.read(buffer);
+            //  inputStream.read(buffer);
+
 
 			/*
              * notice: inputStream.read() will block if no data return
@@ -84,6 +97,8 @@ public class Cliente extends AsyncTask<Object, String, String> {
                 publishProgress(response);
 
             }
+
+
 
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
@@ -110,20 +125,48 @@ public class Cliente extends AsyncTask<Object, String, String> {
     @Override
     protected void onProgressUpdate(String... values) {
         textResponse = values[0];
-            CharSequence text = "connected";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, textResponse, duration);
-            toast.show();
+        CharSequence text = "connected";
 
 
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context,textResponse, duration);
+        toast.show();
+
+        try {
+            JSONArray json = new JSONArray(textResponse);
+
+            JSONObject obj = json.getJSONObject(0);
+            String name =  obj.getString("name");
+            candidat.setText(name);
+
+            obj = json.getJSONObject(1);
+            name = obj.getString("name");
+            candidat2.setText(name);
+
+            obj = json.getJSONObject(2);
+            name = obj.getString("name");
+            candidat3.setText(name);
+
+            obj = json.getJSONObject(3);
+            name = obj.getString("name");
+            candidat4.setText(name);
+
+            obj = json.getJSONObject(4);
+            name = obj.getString("name");
+            candidat5.setText(name);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         super.onProgressUpdate(values);
     }
 
     @Override
     protected void onPostExecute(String result) {
-        textResponse= response;
+        textResponse= result;
         super.onPostExecute(textResponse);
     }
 
