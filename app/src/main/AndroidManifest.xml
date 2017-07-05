@@ -14,12 +14,15 @@
 
         <activity android:name=".CandidateDisplay"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            >
         </activity>
         <activity android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat"
+            >
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -43,10 +43,12 @@ public class Cliente extends AsyncTask<Object, String, String> {
     RadioButton candidat3;
     RadioButton candidat4;
     RadioButton candidat5;
+    TextView electionTitle;
+    JSONArray serverResponse;
 
 
 
-    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, int opcode, RadioButton candidat, RadioButton candidat2, RadioButton candidat3, RadioButton candidat4, RadioButton candidat5) {
+    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, int opcode, RadioButton candidat, RadioButton candidat2, RadioButton candidat3, RadioButton candidat4, RadioButton candidat5, TextView electionTitle, JSONArray serverResponse) {
         dstAddress = addr;
         dstPort = port;
         candidateId =id;
@@ -59,6 +61,9 @@ public class Cliente extends AsyncTask<Object, String, String> {
         this.candidat3 = candidat3;
         this.candidat4 = candidat4;
         this.candidat5 = candidat5;
+        this.electionTitle =electionTitle;
+        this.serverResponse = serverResponse;
+
 
     }
 
@@ -135,7 +140,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
 
         try {
             JSONArray json = new JSONArray(textResponse);
-
+            electionTitle.setText(json.getString(0)); // check how to get the election title form the Json file
             JSONObject obj = json.getJSONObject(0);
             String name =  obj.getString("name");
             candidat.setText(name);
