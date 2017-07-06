@@ -109,7 +109,8 @@ public class Cliente extends AsyncTask<Object, String, String> {
                if(opcode.compareTo("888") == 0){
                    //TODO  send json
                    finalVotes = serverResponse.toString();
-                   //finalVotes = finalVotes.replace("\n","");
+                   finalVotes = finalVotes.replace("\n","");
+                   serverWriter.println(opcode);
                    serverWriter.println(finalVotes);
                    publishProgress(response);
                    opcode = "800";
