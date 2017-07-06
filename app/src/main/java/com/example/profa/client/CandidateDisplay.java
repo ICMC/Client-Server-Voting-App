@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import android.content.Context;
@@ -63,7 +64,7 @@ public class CandidateDisplay extends AppCompatActivity{
             "  \"name\":\"\",\n" +
             "  \"num_votes\":0}\n" +
             "  ]";
-    JSONArray serverResponse = new JSONArray(nullJson);
+    JSONArray serverResponse = new JSONArray();
 
     public CandidateDisplay() throws JSONException {
 
@@ -99,13 +100,14 @@ public class CandidateDisplay extends AppCompatActivity{
 
 
         final Button vote= (Button) findViewById(R.id.vote);
+        final Button close = (Button) findViewById(R.id.close);
 
         final String address = "cosmos.lasdpc.icmc.usp.br";
         final int port = 40011;
         final String response = null;
         final Context context = getApplicationContext();
         final String voteInfo = "";
-        final int[] opcode = {0,1};
+        final String[] opcode = {"999","888"};
         final RadioButton candidat = (RadioButton) findViewById(R.id.candidate1);
         final RadioButton candidat2 = (RadioButton) findViewById(R.id.candidate2);
         final RadioButton candidat3 = (RadioButton) findViewById(R.id.candidate3);
@@ -115,8 +117,13 @@ public class CandidateDisplay extends AppCompatActivity{
 
 
 
-        Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode[0], candidat, candidat2, candidat3, candidat4, candidat5, electionTitle, serverResponse);
+        final Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode[0], candidat, candidat2, candidat3, candidat4, candidat5, electionTitle, serverResponse);
         myCliente.execute();
+        while(serverResponse==null){
+            serverResponse = myCliente.serverResponse;
+        }
+
+
 
         //create Json array to return the values of the votes;
 
@@ -129,51 +136,31 @@ public class CandidateDisplay extends AppCompatActivity{
                 }else {
                         try {
                             addVote(candidateName, serverResponse);
-                            Toast toast = Toast.makeText(context,"Voto salvo", duration);
+                            Toast toast = Toast.makeText(context,"Voto salvo para "+candidateName, duration);
                             toast.show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        new AlertDialog.Builder(context)
-                                .setTitle("Vote Again")
-                                .setMessage("Fazer outra votação?")
-                                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
 
-                                    }
-                                }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                new AlertDialog.Builder(context)
-                                        .setTitle("Closing voting Pool")
-                                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                // SEND MESSAGE TO THE SERVER WITH THE VOTES
-                                                Cliente myCliente = new Cliente(address, port, voterId, response, context, voteInfo, opcode[1], candidat, candidat2, candidat3, candidat4, candidat5, electionTitle, serverResponse);
-                                                myCliente.execute();
+                    RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
+                    radioGroup.clearCheck();
+                    Toast toast = Toast.makeText(context, "Proximo Voto", duration);
+                    toast.show();
 
-                                            }
-                                        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                }).show();
-
-                            }
-
-
-                        }).show();
-                        {
-
-                        }
-                        ;
                 }
             }
         });
+
+        close.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myCliente.serverResponse = serverResponse;
+                myCliente.opcode = "888";
+                //start new intent thas shows that the voting is over
+            }
+        });
+
     }
 
 

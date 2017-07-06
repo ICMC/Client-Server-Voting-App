@@ -15,19 +15,18 @@
         android:textAlignment="center"
         android:textColor="@android:color/darker_gray"
         android:textStyle="bold|italic"
+        android:layout_marginTop="17dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="11dp"
-        />
+        android:layout_alignParentStart="true" />
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="46dp"
-        android:id="@+id/radioGroup">
+        android:id="@+id/radioGroup"
+        android:layout_alignTop="@+id/electionTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <RadioButton
             android:id="@+id/candidate1"
@@ -87,17 +86,17 @@
         android:id="@+id/electionTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/voterID"
+        android:layout_marginTop="18dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
         android:textAlignment="center"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@android:color/background_light"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        android:layout_alignTop="@+id/voterID"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold|italic" />
 
     <Button
         android:id="@+id/vote"
@@ -106,10 +105,22 @@
         android:layout_weight="1"
         android:background="@color/colorAccent"
         android:text="Votar "
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="56dp"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="66dp" />
+        android:layout_below="@+id/vote"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:background="@android:color/holo_orange_dark"
+        android:text="Fechar Urna" />
 
 
 </RelativeLayout>
