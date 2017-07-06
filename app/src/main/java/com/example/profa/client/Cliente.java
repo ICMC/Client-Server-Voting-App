@@ -109,12 +109,15 @@ public class Cliente extends AsyncTask<Object, String, String> {
                if(opcode.compareTo("888") == 0){
                    //TODO  send json
                    finalVotes = serverResponse.toString();
-                   finalVotes = finalVotes.replace("\n","");
+                   //finalVotes = finalVotes.replace("\n","");
                    serverWriter.println(finalVotes);
                    publishProgress(response);
                    opcode = "800";
+
+               }
+               if(opcode.compareTo("808")==0){
                    // TODO close conection
-                  // socket.close();
+                   //socket.close();
                }
            }
 
@@ -154,8 +157,8 @@ public class Cliente extends AsyncTask<Object, String, String> {
        // Toast toast = Toast.makeText(context,"INFO DO SERVIDOR"+textResponse, duration);
         //toast.show();
         if(opcode.compareTo("800")==0){
-             toast = Toast.makeText(context,"AHHHHHHHHHHHH  "+finalVotes, duration);
-            //toast.show();
+            toast = Toast.makeText(context,"AHHHHHHHHHHHH  "+finalVotes, duration);
+            toast.show();
         }
         if(opcode.compareTo("1234")==0){
 

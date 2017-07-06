@@ -43,9 +43,13 @@ import java.util.logging.LogRecord;
  * Created by pawpepe on 15/06/2017.
  */
 
+//TODO check if it is computing the voting correctly, if the JSONArray is being uopdated correctly
+    // TODO verify if it is passing the JSONArray correctly to Async TASK
+
 
 public class CandidateDisplay extends AppCompatActivity{
     String votesInfo;
+    String textResponse =null;
     String candidateName= "";
     String serverJason =null;
     String nullJson = "[{" +
@@ -65,6 +69,7 @@ public class CandidateDisplay extends AppCompatActivity{
             "  \"num_votes\":0}\n" +
             "  ]";
     JSONArray serverResponse = new JSONArray();
+    boolean initiated = false;
 
     public CandidateDisplay() throws JSONException {
 
@@ -99,6 +104,8 @@ public class CandidateDisplay extends AppCompatActivity{
         textView.setText(voterId);
 
 
+
+
         final Button vote= (Button) findViewById(R.id.vote);
         final Button close = (Button) findViewById(R.id.close);
 
@@ -119,9 +126,13 @@ public class CandidateDisplay extends AppCompatActivity{
 
         final Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode[0], candidat, candidat2, candidat3, candidat4, candidat5, electionTitle, serverResponse);
         myCliente.execute();
-        while(serverResponse==null){
-            serverResponse = myCliente.serverResponse;
-        }
+
+
+
+//        while(serverResponse.toString().compareTo("[]")==0){
+//            serverResponse = myCliente.serverResponse;
+//
+//        }
 
 
 
@@ -130,14 +141,32 @@ public class CandidateDisplay extends AppCompatActivity{
         vote.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int duration = Toast.LENGTH_LONG;
+                int duration = Toast.LENGTH_SHORT;
                 if(candidateName.compareTo("")==0){
                     //print that no candidate was selected
+                    Toast toast = Toast.makeText(context,"Escolha um candidato...", duration);
+                    toast.show();
                 }else {
                         try {
+
+                            textResponse = myCliente.textResponse;
+
+                          //  Toast toast = Toast.makeText(context,"TextResponse: " + textResponse, duration);
+                           // toast.show();
+
+                            if(initiated==false){
+                                serverResponse = new JSONArray(textResponse);
+                                initiated=true;
+                            }
+
+                            //toast = Toast.makeText(context,"SERVER JSON ARRAY: " + serverResponse.toString(), duration);
+                            //toast.show();
+
                             addVote(candidateName, serverResponse);
-                            Toast toast = Toast.makeText(context,"Voto salvo para "+candidateName, duration);
-                            toast.show();
+                           // toast = Toast.makeText(context,"Voto salvo para "+candidateName, duration);
+                            candidateName = "";
+                            //toast.show();
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -155,6 +184,10 @@ public class CandidateDisplay extends AppCompatActivity{
         close.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                int duration = Toast.LENGTH_LONG;
+                //String gSon = serverResponse.toString();
+                //Toast toast = Toast.makeText(context,"STRINGGGGG: "+ gSon, duration);
+                //toast.show();
                 myCliente.serverResponse = serverResponse;
                 myCliente.opcode = "888";
                 //start new intent thas shows that the voting is over
