@@ -49,6 +49,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
     RadioButton candidat5;
     TextView electionTitle;
     JSONArray serverResponse;
+    JSONArray temp;
 
 
 
@@ -109,16 +110,20 @@ public class Cliente extends AsyncTask<Object, String, String> {
                if(opcode.compareTo("888") == 0){
                    //TODO  send json
                    finalVotes = serverResponse.toString();
+                   if(finalVotes.compareTo("[]")==0){
+                       finalVotes = response;
+                   }
                    finalVotes = finalVotes.replace("\n","");
                    serverWriter.println(opcode);
                    serverWriter.println(finalVotes);
                    publishProgress(response);
-                   opcode = "800";
+                   opcode = "808";
 
                }
                if(opcode.compareTo("808")==0){
                    // TODO close conection
-                   //socket.close();
+                   socket.close();
+                   return response;
                }
            }
 
@@ -153,7 +158,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
     protected void onProgressUpdate(String... values) {
         textResponse = values[0];
         CharSequence text = "connected";
-        int duration = Toast.LENGTH_SHORT;
+        int duration = Toast.LENGTH_LONG;
         Toast toast;
        // Toast toast = Toast.makeText(context,"INFO DO SERVIDOR"+textResponse, duration);
         //toast.show();
@@ -164,7 +169,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
         if(opcode.compareTo("1234")==0){
 
 
-            // toast = Toast.makeText(context,"INFO DO SERVIDOR"+textResponse, duration);
+            //toast = Toast.makeText(context,"INFO DO SERVIDOR"+textResponse, duration);
             //toast.show();
 
             try {
@@ -172,8 +177,8 @@ public class Cliente extends AsyncTask<Object, String, String> {
 
                 JSONObject obj = json.getJSONObject(0);
 
-                String election = obj.getString("election");
-                electionTitle.setText(election);
+                //String election = obj.getString("election");
+                //electionTitle.setText(election);
 
                 String name =  obj.getString("name");
                 candidat.setText(name);
@@ -196,9 +201,6 @@ public class Cliente extends AsyncTask<Object, String, String> {
                 candidat5.setText(name);
 
                 serverResponse = json;
-
-
-
 
             } catch (JSONException e) {
                 e.printStackTrace();

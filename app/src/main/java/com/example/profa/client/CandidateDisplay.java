@@ -110,7 +110,7 @@ public class CandidateDisplay extends AppCompatActivity{
         final Button close = (Button) findViewById(R.id.close);
 
         final String address = "cosmos.lasdpc.icmc.usp.br";
-        final int port = 40011;
+        final int port = 40012;
         final String response = null;
         final Context context = getApplicationContext();
         final String voteInfo = "";
@@ -129,10 +129,6 @@ public class CandidateDisplay extends AppCompatActivity{
 
 
 
-//        while(serverResponse.toString().compareTo("[]")==0){
-//            serverResponse = myCliente.serverResponse;
-//
-//        }
 
 
 
@@ -185,12 +181,12 @@ public class CandidateDisplay extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 int duration = Toast.LENGTH_LONG;
-                //String gSon = serverResponse.toString();
-                //Toast toast = Toast.makeText(context,"STRINGGGGG: "+ gSon, duration);
-                //toast.show();
+
                 myCliente.serverResponse = serverResponse;
                 myCliente.opcode = "888";
                 //start new intent thas shows that the voting is over
+                Intent intent = new Intent(v.getContext(), Finish.class);
+                startActivity(intent);
             }
         });
 
