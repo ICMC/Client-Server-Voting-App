@@ -21,7 +21,9 @@ The colors for the app were based on [Google's Material Design](https://material
 
 # what the app does 
 1. open conection (send opcode 888)
-2. receive candidates (close conection)
-3. colect votes
-4. send votes (opcode 9999)
+2. receive a json file with candidates info and votes set all to 0
+3. colects votes
+4. closse the ballot box (send opcode 999)
+5. client sends a json file with the updated votes for that ballot box
+6. return to step 1 
 
