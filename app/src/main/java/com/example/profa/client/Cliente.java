@@ -50,10 +50,15 @@ public class Cliente extends AsyncTask<Object, String, String> {
     TextView electionTitle;
     JSONArray serverResponse;
     JSONArray temp;
+    TextView t1;
+    TextView t2;
+    TextView t3;
+    TextView t4;
+    TextView t5;
 
 
 
-    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, String opcode, RadioButton candidat, RadioButton candidat2, RadioButton candidat3, RadioButton candidat4, RadioButton candidat5, TextView electionTitle, JSONArray serverResponse) {
+    Cliente(String addr, int port, String id, String textResponse, Context context, String voteInfo, String opcode, RadioButton candidat, RadioButton candidat2, RadioButton candidat3, RadioButton candidat4, RadioButton candidat5, TextView electionTitle, JSONArray serverResponse, TextView t1,  TextView t2,  TextView t3,  TextView t4,  TextView t5 ) {
         dstAddress = addr;
         dstPort = port;
         candidateId =id;
@@ -68,6 +73,11 @@ public class Cliente extends AsyncTask<Object, String, String> {
         this.candidat5 = candidat5;
         this.electionTitle =electionTitle;
         this.serverResponse = serverResponse;
+        this.t1 = t1;
+        this.t2 =t2;
+        this.t3 =t3;
+        this.t4 = t4;
+        this.t5 = t5;
 
 
     }
@@ -181,23 +191,39 @@ public class Cliente extends AsyncTask<Object, String, String> {
                 //electionTitle.setText(election);
 
                 String name =  obj.getString("name");
+                String info = "     " +obj.get("code").toString();
+                info = info + " " + obj.get("party");
+                t1.setText(info);
                 candidat.setText(name);
 
 
                 obj = json.getJSONObject(1);
                 name = obj.getString("name");
+                info = "     " + obj.get("code").toString();
+                info = info + " " + obj.get("party");
+                t2.setText(info);
                 candidat2.setText(name);
 
                 obj = json.getJSONObject(2);
                 name = obj.getString("name");
+                info = "     " + obj.get("code").toString();
+                info = info + " " + obj.get("party");
+                t3.setText(info);
                 candidat3.setText(name);
 
                 obj = json.getJSONObject(3);
                 name = obj.getString("name");
+                info = "     " + obj.get("code").toString();
+                info = info + " " + obj.get("party");
+                t4.setText(info);
                 candidat4.setText(name);
 
                 obj = json.getJSONObject(4);
                 name = obj.getString("name");
+
+                info = "     " + obj.get("code").toString();
+                info = info + " " + obj.get("party");
+                t5.setText(info);
                 candidat5.setText(name);
 
                 serverResponse = json;
@@ -212,7 +238,7 @@ public class Cliente extends AsyncTask<Object, String, String> {
              toast = Toast.makeText(context,"ERRO Sem conexao", duration);
             toast.show();
         }else if(opcode.compareTo("333") == 0){
-            toast = Toast.makeText(context,"ERRO Endereco Invalido", duration);
+            toast = Toast.makeText(context,response, duration);
             toast.show();
         }
 

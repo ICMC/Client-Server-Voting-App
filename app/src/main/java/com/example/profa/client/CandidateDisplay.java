@@ -21,6 +21,8 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import org.json.*;
+import org.w3c.dom.Text;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,10 +123,15 @@ public class CandidateDisplay extends AppCompatActivity{
         final RadioButton candidat4 = (RadioButton) findViewById(R.id.candidate4);
         final RadioButton candidat5 = (RadioButton) findViewById(R.id.candidate5);
         final TextView electionTitle = (TextView) findViewById(R.id.electionTitle);
+        TextView t1 =(TextView) findViewById(R.id.textView);
+        TextView t2 =(TextView) findViewById(R.id.textView2);
+        TextView t3 =(TextView) findViewById(R.id.textView10);
+        TextView t4 =(TextView) findViewById(R.id.textView11);
+        TextView t5 =(TextView) findViewById(R.id.textView12);
 
 
 
-        final Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode[0], candidat, candidat2, candidat3, candidat4, candidat5, electionTitle, serverResponse);
+        final Cliente myCliente = new Cliente(address,port,voterId, response, context, voteInfo, opcode[0], candidat, candidat2, candidat3, candidat4, candidat5, electionTitle, serverResponse, t1,t2,t3,t4,t5);
         myCliente.execute();
 
 
